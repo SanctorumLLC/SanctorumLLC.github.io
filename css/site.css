@@ -181,8 +181,6 @@ main > section {
 	gap: 2rem;
 	min-height: min(36rem, 75vh);
 	padding-block: 1rem 3rem;
-	/* ClaudeAI: The glow behind the cards is wider than its column and would widen the page on phones. */
-	overflow-x: clip;
 }
 
 .hero h1 {
@@ -238,21 +236,24 @@ main > section {
 /* Hand of cards: each card is placed by its index --i, from -2 (left) to 2 (right), along an arc. */
 
 .hand {
-	--card: clamp(8rem, 13vw, 10.5rem);
+	/* ClaudeAI: The cards are sized by the hand's width (cqi), so the whole fan always fits inside its column. */
+	container-type: inline-size;
 	position: relative;
-	height: calc(var(--card) * 2.15);
-	margin-bottom: calc(var(--card) * 0.3);
+	aspect-ratio: 2;
+	max-height: 22rem;
+	margin-bottom: 2.5rem;
 }
 
 .hand::before {
 	content: "";
 	position: absolute;
-	inset: -10% -15% -5%;
+	inset: -10% 0 -5%;
 	background: radial-gradient(closest-side, rgb(217 174 82 / 0.16), transparent);
 	pointer-events: none;
 }
 
 .card {
+	--card: min(10.5rem, 100cqi / 4.2);
 	--fan: translateX(calc(var(--i) * var(--card) * 0.56)) translateY(calc(var(--i) * var(--i) * var(--card) * 0.05))
 		rotate(calc(var(--i) * 6deg));
 	position: absolute;
@@ -627,15 +628,7 @@ pre {
 	}
 
 	.hand {
-		--card: min(7rem, 22vw);
-		height: calc(var(--card) * 1.8);
 		margin-top: 1rem;
-		justify-self: center;
-		width: 100%;
-	}
-
-	.hand::before {
-		inset-inline: 0;
 	}
 
 	.split {
